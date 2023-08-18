@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // a. Criação do jogo
-app.post('/jogoDeTabuleiro', async (req, res) => {
+app.post('/games/:id', async (req, res) => {
   try {
     const {id, nome, descricao, jogadores, idade } = req.body;
     const novoJogo = await db.jogoDeTabuleiro.create({
@@ -30,7 +30,7 @@ app.post('/jogoDeTabuleiro', async (req, res) => {
 
 /// b. Leitura 
 
-app.get('/jogoDeTabuleiro', async (req, res) => {
+app.get('/games', async (req, res) => {
   try {
     const jogos = await db.jogoDeTabuleiro.findAll();
     res.status(200).json(jogos);
@@ -42,7 +42,7 @@ app.get('/jogoDeTabuleiro', async (req, res) => {
 
 ///c . Atualização 
 
-app.get('/jogoDeTabuleiro/:id', async (req, res) => {
+app.get('/games/:id', async (req, res) => {
   const jogoId = req.params.id;
   try {
     const jogo = await db.jogoDeTabuleiro.findByPk(jogoId);
@@ -59,13 +59,13 @@ app.get('/jogoDeTabuleiro/:id', async (req, res) => {
 
 /// d . exclusão 
 
-app.delete('/jogoDeTabuleiro/:id', async (req, res) => {
+app.delete('/games/:id', async (req, res) => {
   const jogoId = req.params.id;
   try {
     const jogo = await db.jogoDeTabuleiro.findByPk(jogoId);
     if (jogo) {
-      await jogo.destroy(); // Remove o jogo do banco de dados
-      res.status(204).send(); // Resposta sem conteúdo, indicando sucesso na exclusão
+      await jogo.destroy(); 
+      res.status(204).send(); 
     } else {
       res.status(404).json({ mensagem: 'Jogo de tabuleiro não encontrado' });
     }
